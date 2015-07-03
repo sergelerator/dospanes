@@ -1,0 +1,21 @@
+{
+  "name": "dos-panes",
+  "description": "Web application data models",
+  "version": "0.0.1",
+  "author": "Sergio Morales <sergio@wizeline.com>",
+  "repository": "strongloop/express",
+  "keywords": [],
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "2.2.5",
+    "should": "7.0.1"
+  },
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "files": [
+    "index.js",
+    "lib/"
+  ],
+  "scripts": {}
+}
