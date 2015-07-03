@@ -18,6 +18,6 @@
     "lib/"
   ],
   "scripts": {
-    "test": "mocha --reporter spec --bail --check-leaks test/"
+    "test": "mocha --check-leaks test/"
   }
 }
