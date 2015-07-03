@@ -8,7 +8,7 @@
   "dependencies": {},
   "devDependencies": {
     "mocha": "2.2.5",
-    "should": "7.0.1"
+    "chai": "2.1.0"
   },
   "engines": {
     "node": ">= 0.10.0"
@@ -17,5 +17,7 @@
     "index.js",
     "lib/"
   ],
-  "scripts": {}
+  "scripts": {
+    "test": "mocha --reporter spec --bail --check-leaks test/"
+  }
 }
