@@ -8,7 +8,8 @@
   "dependencies": {},
   "devDependencies": {
     "mocha": "2.2.5",
-    "chai": "2.1.0"
+    "chai": "3.0.0",
+    "chai-as-promised": "5.1.0"
   },
   "engines": {
     "node": ">= 0.10.0"

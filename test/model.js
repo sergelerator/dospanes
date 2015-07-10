@@ -1,12 +1,15 @@
 'use strict';
 
 var chai = require('chai'),
+    chaiAsPromised = require('chai-as-promised'),
     mocha = require('mocha'),
     expect = chai.expect,
 
     DosPanes = require('../'),
     Model = DosPanes.Model,
     Attribute = DosPanes.Attribute;
+
+chai.use(chaiAsPromised);
 
 
 describe('Model', function(){
@@ -180,6 +183,39 @@ describe('model.build', function(){
 
       it('has a fullName property equal to " "', function(){
         expect(user).to.have.property('fullName').and.equal(' ');
+      });
+    });
+
+    describe('.isDirty', function(){
+      beforeEach(function(){
+        user = model.build({ firstName: 'Lara' });
+      });
+
+      it('returns false for just built models', function(){
+        expect(user.isDirty()).to.equal(false);
+      });
+
+      it('returns true for models that have been altered', function(){
+        user.firstName = 'Sara';
+        expect(user.isDirty()).to.equal(true);
+      });
+
+      it('returns false after successfully persisting changes', function(){
+        user.firstName = 'Sara';
+        expect(user.isDirty()).to.equal(true);
+        user.save().then(function(attributes){
+          expect(user.isDirty()).to.equal(false);
+        });
+      });
+    });
+
+    describe('.save', function(){
+      beforeEach(function(){
+        user = model.build({ firstName: 'Lara' });
+      });
+
+      it('eventually returns the model\'s attributes', function(){
+        expect(user.save()).to.eventually.equal(user.attributes);
       });
     });
   });
