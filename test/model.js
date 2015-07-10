@@ -162,5 +162,25 @@ describe('model.build', function(){
         expect(user).to.have.property('fullName').and.equal('Tyrion Lannister');
       });
     });
+
+    describe('without attributes param', function(){
+      var firstName, lastName;
+
+      before(function(){
+        user = model.build();
+      });
+
+      it('has a firstName property equal to ""', function(){
+        expect(user).to.have.property('firstName').and.equal('');
+      });
+
+      it('has a lastName property equal to ""', function(){
+        expect(user).to.have.property('lastName').and.equal('');
+      });
+
+      it('has a fullName property equal to " "', function(){
+        expect(user).to.have.property('fullName').and.equal(' ');
+      });
+    });
   });
 });
