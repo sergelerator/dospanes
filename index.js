@@ -1,3 +1,4 @@
 'use strict';
 
-module.exports = require('./lib/dospanes');
+var modulePath = process.env.COVER ? './lib-cov' : './lib';
+module.exports = require(modulePath);
