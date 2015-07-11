@@ -184,6 +184,11 @@ describe('model.build', function(){
       it('has a fullName property equal to " "', function(){
         expect(user).to.have.property('fullName').and.equal(' ');
       });
+
+      it('allows to set the value of the lastName property"', function(){
+        user.lastName = 'Jose';
+        expect(user).to.have.property('lastName').and.equal('Jose');
+      });
     });
 
     describe('.isDirty', function(){
