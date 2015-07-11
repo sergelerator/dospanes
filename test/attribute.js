@@ -20,6 +20,11 @@ describe('Attribute', function(){
       expect(attribute).to.have.property('type');
       expect(attribute.type).to.equal(null);
     });
+
+    it('returns an object with a default validator function', function(){
+      expect(attribute).to.have.property('validator');
+      expect(attribute.validator()).to.equal(true);
+    });
   });
 
   describe('called with type "text"', function(){
