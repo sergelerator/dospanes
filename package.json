@@ -21,10 +21,9 @@
     "lib/"
   ],
   "scripts": {
-    "clear-instrument": "rm -rf lib-cov",
     "coverage-report": "COVER=1 mocha --reporter mocha-istanbul --check-leaks test/",
     "instrument": "istanbul instrument --output lib-cov --no-compact --variable global.__coverage__ lib",
     "test": "mocha --reporter spec --check-leaks test/",
-    "test-cov": "npm run instrument && npm run coverage-report && npm run clear-instrument"
+    "test-cov": "npm run instrument && npm run coverage-report && rm -rf lib-cov"
   }
 }
