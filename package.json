@@ -7,9 +7,11 @@
   "keywords": [],
   "dependencies": {},
   "devDependencies": {
-    "mocha": "2.2.5",
     "chai": "3.0.0",
-    "chai-as-promised": "5.1.0"
+    "chai-as-promised": "5.1.0",
+    "istanbul": "0.3.17",
+    "mocha": "2.2.5",
+    "mocha-istanbul": "0.2.0"
   },
   "engines": {
     "node": ">= 0.10.0"
@@ -19,6 +21,7 @@
     "lib/"
   ],
   "scripts": {
-    "test": "mocha --check-leaks test/"
+    "test": "mocha --reporter spec --check-leaks test/",
+    "testcov": "mocha --reporter mocha-istanbul --check-leaks test/"
   }
 }
