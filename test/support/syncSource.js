@@ -1,6 +1,6 @@
 'use strict';
 
-function SyncSource() {
+function SyncSource(initialData) {
   var data = {},
       onUpdateHandlers = [],
       syncSource = {

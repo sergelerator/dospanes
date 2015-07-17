@@ -32,56 +32,55 @@ describe('Model as sync source', function(){
   });
 
   describe('.notifySyncTargets', function(){
-    it('notifies the sync target', function(){
-      Model.notifySyncTargets();
-      expect(syncSpy).to.have.been.called.once();
-      expect(syncSpy).to.have.been.called.with({});
-    });
-
     it('returns a Promise', function(){
       var promise = Model.notifySyncTargets();
       expect(promise).to.be.a('promise');
     });
 
-    it('the returned promise resolves to the syncTarget data', function(){
-      var syncTargetData = { attribute: 'value' },
-          promise;
-      syncTarget.setData(syncTargetData);
-      promise = Model.notifySyncTargets();
-
-      expect(promise).to.eventually.equal(syncTargetData);
+    it('notifies the sync target', function(done){
+      Model.notifySyncTargets().then(function(){
+        expect(syncSpy).to.have.been.called.once();
+        expect(syncSpy).to.have.been.called.with({});
+        done();
+      });
     });
 
-    it('the returned promise rejects if one of the sync targets rejects', function(){
+    it('the returned promise resolves to the syncTarget data', function(done){
+      var promise;
+      promise = Model.notifySyncTargets();
+
+      expect(promise).to.be.fulfilled;
+      expect(promise).to.eventually.deep.equal([{}]).notify(done);
+    });
+
+    it('the returned promise rejects if one of the sync targets rejects', function(done){
       var promise, syncTargets;
 
       Model.removeSyncTarget(syncTarget);
 
-      syncTargets = [
-        (new SyncTarget({ one: 1 })),
-        (new SyncTarget({ two: 2 })),
-        (new SyncTarget({ fail: true }))
-      ];
-      Model.addSyncTarget.apply(Model, syncTargets);
+      Model.addSyncTarget(new SyncTarget({}, 0, false));
+      Model.addSyncTarget(new SyncTarget({}, 0, false));
+      Model.addSyncTarget(new SyncTarget({}, 5, true));
+
       promise = Model.notifySyncTargets();
 
-      expect(promise).to.reject;
+      expect(promise).to.be.rejectedWith(Error).notify(done);
+
+      Model.clearSyncTargets();
     });
 
-    it('the returned promise sends the result of all promises to it\'s own "then"', function(){
+    it('the returned promise sends the result of all promises to it\'s own "then"', function(done){
       var promise, syncTargets;
 
       Model.removeSyncTarget(syncTarget);
 
-      syncTargets = [
-        (new SyncTarget({ one: 1 })),
-        (new SyncTarget({ two: 2 })),
-        (new SyncTarget({ three: 3 }))
-      ];
-      Model.addSyncTarget.apply(Model, syncTargets);
+      Model.addSyncTarget(new SyncTarget({one: 1}, 0));
+      Model.addSyncTarget(new SyncTarget({two: 2}, 0));
+      Model.addSyncTarget(new SyncTarget({three: 3}, 0));
+
       promise = Model.notifySyncTargets();
 
-      expect(promise).to.eventually.deep.equal([{one: 1}, {two: 2}, {three: 3}]);
+      expect(promise).to.eventually.deep.equal([{one: 1}, {two: 2}, {three: 3}]).notify(done);
     });
   });
 });
