@@ -1,22 +1,16 @@
 'use strict';
 
+var syncTarget = require('../../lib/sync_objects/syncTarget'),
+    defaultSyncTarget = {};
+
 function SyncTarget(data, delay, fail) {
   var returnData = (data || {}),
       delay = (delay || 1),
-      syncTarget = {
-        setData: setData,
-        sync: sync
-      };
+      target = {};
 
-  function setData(newData){
-    if (typeof newData === 'object') {
-      data = newData;
-    } else {
-      throw(new TypeError('sync source data should be an object'));
-    }
-  }
+  syncTarget.mixInto(target);
 
-  function sync(data){
+  target.sync = function sync(data){
     return new Promise(function(resolve, reject){
       setTimeout(function(){
         if (fail) {
@@ -28,7 +22,10 @@ function SyncTarget(data, delay, fail) {
     });
   }
 
-  return Object.create(syncTarget, {});
+  return target;
 }
+
+syncTarget.mixInto(defaultSyncTarget);
+SyncTarget.Default = defaultSyncTarget;
 
 module.exports = SyncTarget;

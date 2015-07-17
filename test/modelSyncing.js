@@ -98,7 +98,7 @@ describe('Model as sync target', function(){
 
   afterEach(function(){
     Model.sync = originalSync;
-    syncSource.clear();
+    syncSource.clearSyncTargets();
   });
 
   it('syncSource notifies the Model.sync function', function(){
