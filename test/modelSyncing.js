@@ -31,14 +31,14 @@ describe('Model as sync source', function(){
     syncTarget.sync = originalSync;
   });
 
-  describe('.notifySyncTargets', function(){
+  describe('.triggerUpdate', function(){
     it('returns a Promise', function(){
-      var promise = Model.notifySyncTargets();
+      var promise = Model.triggerUpdate();
       expect(promise).to.be.a('promise');
     });
 
     it('notifies the sync target', function(done){
-      Model.notifySyncTargets().then(function(){
+      Model.triggerUpdate().then(function(){
         expect(syncSpy).to.have.been.called.once();
         expect(syncSpy).to.have.been.called.with({});
         done();
@@ -47,7 +47,7 @@ describe('Model as sync source', function(){
 
     it('the returned promise resolves to the syncTarget data', function(done){
       var promise;
-      promise = Model.notifySyncTargets();
+      promise = Model.triggerUpdate();
 
       expect(promise).to.be.fulfilled;
       expect(promise).to.eventually.deep.equal([{}]).notify(done);
@@ -62,7 +62,7 @@ describe('Model as sync source', function(){
       Model.addSyncTarget(new SyncTarget({}, 0, false));
       Model.addSyncTarget(new SyncTarget({}, 5, true));
 
-      promise = Model.notifySyncTargets();
+      promise = Model.triggerUpdate();
 
       expect(promise).to.be.rejectedWith(Error).notify(done);
 
@@ -78,7 +78,7 @@ describe('Model as sync source', function(){
       Model.addSyncTarget(new SyncTarget({two: 2}, 0));
       Model.addSyncTarget(new SyncTarget({three: 3}, 0));
 
-      promise = Model.notifySyncTargets();
+      promise = Model.triggerUpdate();
 
       expect(promise).to.eventually.deep.equal([{one: 1}, {two: 2}, {three: 3}]).notify(done);
     });
