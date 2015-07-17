@@ -51,6 +51,38 @@ describe('Model as sync source', function(){
 
       expect(promise).to.eventually.equal(syncTargetData);
     });
+
+    it('the returned promise rejects if one of the sync targets rejects', function(){
+      var promise, syncTargets;
+
+      Model.removeSyncTarget(syncTarget);
+
+      syncTargets = [
+        (new SyncTarget({ one: 1 })),
+        (new SyncTarget({ two: 2 })),
+        (new SyncTarget({ fail: true }))
+      ];
+      Model.addSyncTarget.apply(Model, syncTargets);
+      promise = Model.notifySyncTargets();
+
+      expect(promise).to.reject;
+    });
+
+    it('the returned promise sends the result of all promises to it\'s own "then"', function(){
+      var promise, syncTargets;
+
+      Model.removeSyncTarget(syncTarget);
+
+      syncTargets = [
+        (new SyncTarget({ one: 1 })),
+        (new SyncTarget({ two: 2 })),
+        (new SyncTarget({ three: 3 }))
+      ];
+      Model.addSyncTarget.apply(Model, syncTargets);
+      promise = Model.notifySyncTargets();
+
+      expect(promise).to.eventually.deep.equal([{one: 1}, {two: 2}, {three: 3}]);
+    });
   });
 });
 

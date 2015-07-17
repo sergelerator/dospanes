@@ -1,7 +1,8 @@
 'use strict';
 
-function SyncTarget() {
-  var data = {},
+function SyncTarget(initialData, delay) {
+  var data = (initialData || {}),
+      delay = (delay || 1),
       syncTarget = {
         setData: setData,
         sync: sync
@@ -17,12 +18,14 @@ function SyncTarget() {
 
   function sync(data){
     return new Promise(function(resolve, reject){
-      if (data.fail) {
-        reject(Error('Failed'));
-      } else {
-        data = data;
-        resolve(data);
-      }
+      setTimeout(function(){
+        if (data.fail) {
+          reject(Error('Failed'));
+        } else {
+          data = data;
+          resolve(data);
+        }
+      }, delay);
     });
   }
 
