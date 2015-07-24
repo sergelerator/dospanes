@@ -130,6 +130,11 @@ describe('model.build', function(){
           fullName: Attribute.computed(function(){
             return this.firstName + ' ' + this.lastName;
           })
+        },
+        methods: {
+          say: function(message){
+            return this.fullName + ': ' + message;
+          }
         }
       };
       model = Model(modelName, modelDescription);
@@ -198,6 +203,24 @@ describe('model.build', function(){
       it('allows to set the value of the lastName property"', function(){
         user.lastName = 'Jose';
         expect(user).to.have.property('lastName').and.equal('Jose');
+      });
+    });
+
+    describe('methods', function(){
+      var firstName, lastName;
+
+      before(function(){
+        firstName = 'Tyrion', lastName = 'Lannister';
+        attributes = {
+          firstName: firstName,
+          lastName: lastName
+        };
+        user = model.build(attributes);
+      });
+
+      it('has a say method which returns "Tyrion Lannister: `message`"', function(){
+        expect(user).to.respondTo('say');
+        expect(user.say('We are gonna need more wine')).to.equal('Tyrion Lannister: We are gonna need more wine');
       });
     });
 
