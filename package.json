@@ -24,7 +24,7 @@
   "scripts": {
     "coverage-report": "COVER=1 mocha --reporter mocha-istanbul --check-leaks test/",
     "instrument": "istanbul instrument --output lib-cov --no-compact --variable global.__coverage__ lib",
-    "test": "mocha --reporter spec --check-leaks test/",
+    "test": "mocha --reporter spec --check-leaks --recursive test/",
     "test-cov": "npm run instrument && npm run coverage-report && rm -rf lib-cov"
   }
 }
