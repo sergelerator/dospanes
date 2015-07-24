@@ -164,6 +164,16 @@ describe('model.build', function(){
       it('has a fullName property equal to "Tyrion Lannister"', function(){
         expect(user).to.have.property('fullName').and.equal('Tyrion Lannister');
       });
+
+      describe('after changing firstName', function(){
+        before(function(){
+          user.firstName = 'Cersei';
+        });
+
+        it('updates the return value of fullName', function(){
+          expect(user).to.have.property('fullName').and.equal('Cersei Lannister');
+        });
+      });
     });
 
     describe('without attributes param', function(){
