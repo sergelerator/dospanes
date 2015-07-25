@@ -52,7 +52,7 @@ describe('Model', function(){
       });
 
       it('has an empty store', function(){
-        expect(user.store).to.deep.equal([]);
+        expect(user.store.length).to.equal(0);
       });
     });
 
@@ -86,7 +86,7 @@ describe('Model', function(){
       });
 
       it('has an empty store', function(){
-        expect(user.store).to.deep.equal([]);
+        expect(user.store.length).to.equal(0);
       });
     });
   });

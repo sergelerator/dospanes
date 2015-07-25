@@ -7,7 +7,10 @@ var chai = require('chai'),
 
     DosPanes = require('../../'),
     Model = DosPanes.Model,
-    Attribute = DosPanes.Attribute;
+    Attribute = DosPanes.Attribute,
+
+    hasMany = Model.hasMany,
+    belongsTo = Model.belongsTo
 
 chai.use(chaiAsPromised);
 
@@ -29,6 +32,10 @@ describe('model.build', function(){
             return this.firstName + ' ' + this.lastName;
           })
         },
+        relations: [
+          hasMany('friends', { model: 'User' }),
+          belongsTo('significantOther', { model: 'User' })
+        ],
         methods: {
           say: function(message){
             return this.fullName + ': ' + message;
@@ -42,6 +49,12 @@ describe('model.build', function(){
       if (Model[modelName]) {
         delete Model[modelName];
       }
+    });
+
+    it('increases the store length by 1', function(){
+      var currentLength = model.store.length;
+      model.build();
+      expect(model.store.length).to.equal(currentLength + 1);
     });
 
     describe('with attributes param', function(){
@@ -119,6 +132,34 @@ describe('model.build', function(){
       it('has a say method which returns "Tyrion Lannister: `message`"', function(){
         expect(user).to.respondTo('say');
         expect(user.say('We are gonna need more wine')).to.equal('Tyrion Lannister: We are gonna need more wine');
+      });
+    });
+
+    describe('relations', function(){
+      var subject, significantOther;
+
+      before(function(){
+        attributes = {
+          firstName: 'Jon',
+          lastName: 'Snow'
+        };
+        subject = model.build(attributes);
+      });
+
+      it('has one significantOther', function(){
+        significantOther = model.build({ firstName: 'Ygritte' });
+        subject.significantOther = significantOther;
+        expect(subject).to.have.property('significantOther').and.equal(significantOther);
+      });
+
+      it('has many friends', function(){
+        subject.friends.push(
+          model.build({ firstName: 'Samwell', lastName: 'Tarly' }),
+          model.build({ firstName: 'Grenn' }),
+          model.build({ firstName: 'Pypar' })
+        );
+
+        expect(subject.friends.items.length).to.equal(3);
       });
     });
 
