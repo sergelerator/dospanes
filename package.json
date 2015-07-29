@@ -3,7 +3,6 @@
   "description": "Web application data models",
   "version": "0.0.1",
   "author": "Sergio Morales <sergio@wizeline.com>",
-  "repository": "strongloop/express",
   "keywords": [],
   "dependencies": {},
   "devDependencies": {
